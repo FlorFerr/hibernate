@@ -6,9 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.flor.hibernate.demo.entity.Student;
 
-
-
-public class CreateStudentDemo {
+public class UpdateStudentDemo {
 
 	public static void main(String[] args) {
 		SessionFactory factory = new Configuration()
@@ -18,12 +16,34 @@ public class CreateStudentDemo {
 		Session session = factory.getCurrentSession();	
 	
 	try {
-		System.out.println("Creating new student obj");
-		Student tempStudent = new Student("Jose", "Perez", "josep@gmail.com");
+		int studentId= 1;
+		
+		
+		
+		
+		
+		session = factory.getCurrentSession();
 		session.beginTransaction();
-		System.out.println("Saving the Student");
-		session.save(tempStudent);
+		System.out.println("Getting student with id: " + studentId);
+		
+		Student myStudent = session.get(Student.class, studentId);
+		
+		System.out.println("Updating studen...");
+		
+		myStudent.setFirstName("Florencia");
+		
 		session.getTransaction().commit();
+		
+		session = factory.getCurrentSession();
+		
+		session.beginTransaction();
+		
+		System.out.println("Update email for all students");
+		
+		session.createQuery("update Student set email='fa.hotmail.com'").executeUpdate();
+		
+		session.getTransaction().commit();
+		
 		System.out.println("Done!");
 		
 	}
